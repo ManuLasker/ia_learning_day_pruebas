@@ -1,0 +1,7 @@
+{
+    "s3_path": "s3://learning-day-ia-bucket/image_in/image.jpg",
+    "new_shape": {
+        "width": 200,
+        "height": 200
+    }
+}
