@@ -22,6 +22,7 @@ def get_output_name(output_name, width, height):
     return output_name.split(".")[0] + f"to{width}x{height}." + output_name.split(".")[1]
 
 def lambda_handler(event, context):
+    print(event)
     if event and event.get("type", "") == "health":
         return health_handler()
     else:
@@ -36,6 +37,7 @@ def lambda_handler(event, context):
         output_path = tempfile.gettempdir() + os.sep + "output_image." + source_name.split(".")[-1]
 
         # download image
+        print(source_bucket, source_name, file_path)
         s3_client.download_file(source_bucket, source_name, file_path)
         # load image
         with Image.open(file_path) as image:
@@ -51,5 +53,8 @@ def lambda_handler(event, context):
         s3_client.upload_file(output_path, source_bucket, output_name)
 
         return {
-            "status": "processed"
+            "status": "processed",
+            "new_shape": shape["width"]+"x"+shape["height"],
+            "old_shape": old_shape["width"]+"x"+old_shape["height"]
         }
+
