@@ -1,0 +1,7 @@
+{
+  "s3_path": "s3://<s3_bucket>/<s3_key>",
+  "new_shape": {
+    "width": "<width_param>",
+    "height": "<height_param>"
+  }
+}

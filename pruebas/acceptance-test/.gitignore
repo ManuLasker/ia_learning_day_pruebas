@@ -1,0 +1,6 @@
+# Test files
+.gradle/
+.idea/
+build/
+target/
+.project

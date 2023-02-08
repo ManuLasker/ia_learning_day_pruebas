@@ -2,7 +2,7 @@ plugins {
     id "java"
 }
 
-group "co.com.bancolombia.smokeTest.learning_day_ia"
+group "co.com.bancolombia.acceptanceTest.learning_day_ia"
 version "1.0-SNAPSHOT"
 
 repositories {
@@ -27,11 +27,9 @@ dependencies {
     implementation "jakarta.xml.bind:jakarta.xml.bind-api:2.3.2"
     implementation "org.glassfish.jaxb:jaxb-runtime:2.3.2"
     implementation platform("com.amazonaws:aws-java-sdk-bom:1.11.228")
-
-
     implementation "com.amazonaws:aws-java-sdk-lambda"
-
-
+    implementation "com.amazonaws:aws-java-sdk-s3"
+    implementation "com.amazonaws:aws-java-sdk-dynamodb"
     implementation "com.googlecode.json-simple:json-simple:1.1.1"
     implementation "com.google.code.gson:gson:2.2.2"
     testImplementation "commons-io:commons-io:2.8.0"
@@ -41,11 +39,10 @@ dependencies {
 
 test {
     useJUnitPlatform() // junit5
-
-    systemProperty "aws.accessKeyId",  System.getenv("aws_access_key_id")
-
-    systemProperty "aws.secretKey",  System.getenv("aws_secret_access_key")
-
+    systemProperty "aws.accessKeyId",  System.getenv("AWS_ACCESS_KEY_ID")
+    systemProperty "aws.secretKey",  System.getenv("AWS_SECRET_ACCESS_KEY")
+    systemProperty "accessKeyIdLambda",  System.getenv("AWS_ACCESS_KEY_ID")
+    systemProperty "secretKeyLambda",  System.getenv("AWS_SECRET_ACCESS_KEY")
     outputs.upToDateWhen { false }
 }
 

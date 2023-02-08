@@ -2,7 +2,7 @@ package co.com.bancolombia.smokeTest.learning_day_ia.utils;
 
 public class ConfigurationUtils {
     // AWS Configuration, write any aws configuration here
-    final public static String lambdaName = "nu0087001-aid-r2-"+System.getProperty("environment")+"-learning_day_ia";
+    final public static String lambdaName = "learning_day_ia";
 
 
     // Local Configuration, write any local configuration here

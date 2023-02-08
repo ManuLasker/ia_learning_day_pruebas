@@ -1,4 +1,4 @@
-import json 
+import json
 import os
 import tempfile
 import boto3
@@ -18,13 +18,16 @@ def health_handler():
         "timestamp": str(datetime.now())
     }
 
+def get_output_name(output_name, width, height):
+    return output_name.split(".")[0] + f"to{width}x{height}." + output_name.split(".")[1]
+
 def lambda_handler(event, context):
     if event and event.get("type", "") == "health":
         return health_handler()
     else:
-        s3_uri = event["s3_path"] 
+        s3_uri = event["s3_path"]
         shape = event["new_shape"]
-        
+
         source_parse = urllib.parse.urlparse(s3_uri)
         source_bucket = source_parse.netloc
         source_name = source_parse.path[1:]
@@ -37,15 +40,16 @@ def lambda_handler(event, context):
         # load image
         with Image.open(file_path) as image:
             # resize image
-            old_shape = {"width": image.size[0],
-                         "height": image.size[1]}
-            resized_image = image.resize((shape["width"], shape["height"]))
+            old_shape = {"width": str(image.size[0]),
+                         "height": str(image.size[1])}
+            resized_image = image.resize((int(shape["width"]), int(shape["height"])))
             resized_image.save(output_path)
+            output_name = get_output_name(output_name, resized_image.size[0], resized_image.size[1])
         # write into dynamodb
         table.put_item(Item={'s3_path': f's3:://{source_bucket}/{output_name}', "new_shape": shape, "old_shape": old_shape})
-        # save image to s3 out path 
+        # save image to s3 out path
         s3_client.upload_file(output_path, source_bucket, output_name)
-        
+
         return {
             "status": "processed"
         }
